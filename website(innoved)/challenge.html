@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Challenge – Swipe Less, Live More</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fffbe6, #e1f4f3);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    header, footer {
+      background-color: #6db9ef;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-custom {
+      background: linear-gradient(90deg, #cce6f4, #b3d9f2, #99cbeb);
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: slideInDown 1s;
+    }
+
+    .navbar-custom .navbar-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .navbar-custom .nav-link {
+      font-size: 1rem;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .navbar-custom .nav-link:hover {
+      color: #fff;
+      background: linear-gradient(45deg, #6db9ef, #4da5de);
+      transform: scale(1.1);
+    }
+
+    .navbar-custom .active {
+      background: linear-gradient(45deg, #6db9ef, #4da5de);
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .challenge-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .challenge-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .challenge-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .mark-done-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .mark-done-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .marked {
+      color: #28a745;
+      animation: pop 0.4s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-weight: 700;
+    }
+
+    footer {
+      background-color: #6db9ef;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>✨ Your 7-Day Detox Challenge ✨</h1>
+    <p>Small changes, big impact. Are you ready?</p>
+  </header>
+
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid">
+    <a class="navbar-brand d-lg-none" href="#">ReVibe</a>
+
+    <!-- Hamburger Icon -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Menu -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+      <!-- Close Button (visible only on small screens) -->
+      <button type="button" class="btn-close ms-auto d-lg-none mb-3" aria-label="Close" id="closeMenuBtn"></button>
+
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="challenge.html">Challenge</a></li>
+        <li class="nav-item"><a class="nav-link" href="journal.html">Journal</a></li>
+        <li class="nav-item"><a class="nav-link" href="mood.html">Mood Chart</a></li>
+        <li class="nav-item"><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <section class="container py-5">
+    <h2 class="section-title">🌿 The 7-Day Digital Detox</h2>
+    <div class="row">
+      <!-- You can duplicate this block and change day/description/icon -->
+      <div class="col-md-6">
+        <div class="challenge-card text-center" data-day="1">
+          <button class="mark-done-btn">☐</button>
+          <div class="challenge-icon">📱</div>
+          <h5>Day 1 – Uninstall One Social Media App</h5>
+          <p>Start small. Pick one app and delete it from your phone.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="challenge-card text-center" data-day="2">
+          <button class="mark-done-btn">☐</button>
+          <div class="challenge-icon">🍽️</div>
+          <h5>Day 2 – Phone-Free Meals</h5>
+          <p>Enjoy your food. No screens allowed at the table.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="challenge-card text-center" data-day="3">
+          <button class="mark-done-btn">☐</button>
+          <div class="challenge-icon">⏰</div>
+          <h5>Day 3 – No Phone for 1 Hour After Waking</h5>
+          <p>Start your day mindfully without screens.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="challenge-card text-center" data-day="4">
+          <button class="mark-done-btn">☐</button>
+          <div class="challenge-icon">🔕</div>
+          <h5>Day 4 – Turn Off Notifications</h5>
+          <p>Silence the noise. Only check messages on your terms.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="challenge-card text-center" data-day="5">
+          <button class="mark-done-btn">☐</button>
+          <div class="challenge-icon">🌙</div>
+          <h5>Day 5 – No Screen After 7PM</h5>
+          <p>Give your brain a break and sleep better tonight.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="challenge-card text-center" data-day="6">
+          <button class="mark-done-btn">☐</button>
+          <div class="challenge-icon">🧘</div>
+          <h5>Day 6 – 3-Hour Phone-Free Block</h5>
+          <p>Choose a 3-hour block to unplug completely.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="challenge-card text-center" data-day="7">
+          <button class="mark-done-btn">☐</button>
+          <div class="challenge-icon">🚫</div>
+          <h5>Day 7 – Full Social Media-Free Day</h5>
+          <p>Test your independence. You’ve got this!</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="challenge-card text-center" data-day="bonus">
+          <button class="mark-done-btn">☐</button>
+          <div class="challenge-icon">📓</div>
+          <h5>Bonus – Reflect & Journal</h5>
+          <p>Write down how it felt. What did you learn about yourself?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Swipe Less, Live More</p>
+  </footer>
+
+  <script>
+    // Load saved status
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".challenge-card").forEach(card => {
+        const day = card.getAttribute("data-day");
+        const btn = card.querySelector(".mark-done-btn");
+        const saved = localStorage.getItem("challenge_" + day);
+        if (saved === "done") {
+          btn.innerText = "✅";
+          btn.classList.add("marked");
+        }
+
+        btn.addEventListener("click", () => {
+          if (btn.classList.contains("marked")) {
+            btn.innerText = "☐";
+            btn.classList.remove("marked");
+            localStorage.removeItem("challenge_" + day);
+          } else {
+            btn.innerText = "✅";
+            btn.classList.add("marked");
+            localStorage.setItem("challenge_" + day, "done");
+          }
+        });
+      });
+    });
+  </script>
+  <!-- Bootstrap Bundle with Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.getElementById('closeMenuBtn').addEventListener('click', function () {
+    const menu = document.getElementById('navbarContent');
+    const collapseInstance = bootstrap.Collapse.getInstance(menu);
+    if (collapseInstance) {
+      collapseInstance.hide(); // Close if initialized
+    } else {
+      new bootstrap.Collapse(menu).hide(); // Initialize then close
+    }
+  });
+</script>
+
+
+</body>
+</html>

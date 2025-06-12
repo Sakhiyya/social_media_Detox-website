@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz – Swipe Less, Live More</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+
+  <style>
+    /* General Styles */
+    body {
+      background: linear-gradient(120deg, #c4f1f9, #eaf6f6);
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Navbar Styles */
+    .navbar-custom {
+      background: linear-gradient(90deg, #00c2cb, #4fc1e9, #87d3da);
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: slideInDown 1s;
+    }
+
+    .navbar-custom .navbar-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px; /* Space between links */
+    }
+
+    .navbar-custom .nav-item {
+      position: relative;
+    }
+
+    .navbar-custom .nav-link {
+      font-size: 1rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .navbar-custom .nav-link:hover {
+      color: #fff;
+      background: linear-gradient(45deg, #00c2cb, #4fc1e9);
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(0, 194, 203, 0.4);
+    }
+
+    .navbar-custom .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #00c2cb;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-custom .nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .navbar-custom .active {
+      background: linear-gradient(45deg, #00c2cb, #4fc1e9);
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* Quiz Container Styles */
+    .quiz-container {
+      background-color: #ffffff;
+      border-radius: 15px;
+      padding: 40px;
+      max-width: 800px;
+      margin: 60px auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #007c91;
+    }
+
+    .question {
+      margin-bottom: 25px;
+    }
+
+    .progress {
+      height: 20px;
+      margin-bottom: 30px;
+      background-color: #c4f1f9;
+    }
+
+    .progress-bar {
+      background-color: #00c2cb;
+    }
+
+    .btn-submit {
+      background-color: #00c2cb;
+      color: white;
+      border-radius: 30px;
+      padding: 10px 25px;
+      font-weight: bold;
+      border: none;
+      transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+      background-color: #007c91;
+    }
+
+    .result-message {
+      font-size: 1.3rem;
+      margin-top: 20px;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🌐 Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid">
+    <a class="navbar-brand d-lg-none" href="#">ReVibe</a>
+
+    <!-- Hamburger Icon -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Menu -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+      <!-- Close Button (only on mobile) -->
+      <button type="button" class="btn-close ms-auto d-lg-none mb-3" aria-label="Close" id="closeMenuBtn"></button>
+
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="challenge.html">Challenge</a></li>
+        <li class="nav-item"><a class="nav-link" href="journal.html">Journal</a></li>
+        <li class="nav-item"><a class="nav-link" href="mood.html">Mood Chart</a></li>
+        <li class="nav-item"><a class="nav-link active" href="quiz.html">Quiz</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- 📄 Quiz Content -->
+  <div class="quiz-container">
+    <h2 class="text-center mb-4">🧠 Quiz: How Well Do You Know Digital Wellness?</h2>
+    <div class="progress mb-4">
+      <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+    </div>
+    <form id="quizForm">
+      <!-- Question 1 -->
+      <div class="question">
+        <label><strong>1. What is a sign of social media addiction?</strong></label><br/>
+        <input type="radio" name="q1" value="a" /> A balanced daily routine<br/>
+        <input type="radio" name="q1" value="b" /> Sleeping less to scroll<br/>
+        <input type="radio" name="q1" value="c" /> Less screen time<br/>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="question">
+        <label><strong>2. Which of these is a benefit of digital detox?</strong></label><br/>
+        <input type="radio" name="q2" value="a" /> Eye strain<br/>
+        <input type="radio" name="q2" value="b" /> Better focus<br/>
+        <input type="radio" name="q2" value="c" /> FOMO<br/>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="question">
+        <label><strong>3. How often should you take screen breaks?</strong></label><br/>
+        <input type="radio" name="q3" value="a" /> Every 1-2 hours<br/>
+        <input type="radio" name="q3" value="b" /> Once per day<br/>
+        <input type="radio" name="q3" value="c" /> Never<br/>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="question">
+        <label><strong>4. Which activity promotes mindfulness?</strong></label><br/>
+        <input type="radio" name="q4" value="a" /> Doomscrolling<br/>
+        <input type="radio" name="q4" value="b" /> Watching 8 hours of TikToks<br/>
+        <input type="radio" name="q4" value="c" /> Journaling<br/>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="question">
+        <label><strong>5. What's a healthy evening habit?</strong></label><br/>
+        <input type="radio" name="q5" value="a" /> Checking Instagram before bed<br/>
+        <input type="radio" name="q5" value="b" /> Using blue light filters<br/>
+        <input type="radio" name="q5" value="c" /> Drinking 4 coffees<br/>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn-submit mt-3">Submit Quiz</button>
+        <p class="result-message text-center mt-4" id="resultMsg"></p>
+      </div>
+    </form>
+  </div>
+
+  <!-- 🎉 Confetti Canvas -->
+  <canvas class="confetti" id="confettiCanvas"></canvas>
+
+  <script>
+    const form = document.getElementById("quizForm");
+    const progressBar = document.getElementById("progressBar");
+    const resultMsg = document.getElementById("resultMsg");
+
+    const correctAnswers = {
+      q1: "b",
+      q2: "b",
+      q3: "a",
+      q4: "c",
+      q5: "b"
+    };
+
+    const totalQuestions = Object.keys(correctAnswers).length;
+
+    // Update progress bar
+    const inputs = form.querySelectorAll("input[type='radio']");
+    inputs.forEach(input => {
+      input.addEventListener("change", () => {
+        const answered = new Set();
+        inputs.forEach(i => {
+          if (i.checked) answered.add(i.name);
+        });
+        const progress = (answered.size / totalQuestions) * 100;
+        progressBar.style.width = `${progress}%`;
+      });
+    });
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+
+      for (let key in correctAnswers) {
+        const selected = form.querySelector(`input[name="${key}"]:checked`);
+        if (selected && selected.value === correctAnswers[key]) {
+          score++;
+        }
+      }
+
+      let message = "";
+      if (score === 5) {
+        message = `Perfect score! 🌟 You're a Digital Detox Pro!`;
+        launchConfetti();
+      } else if (score >= 3) {
+        message = `Nice! You scored ${score}/5. You're on the right path! 💪`;
+      } else {
+        message = `You scored ${score}/5. Let’s detox and grow! 🌱`;
+      }
+
+      resultMsg.textContent = message;
+    });
+
+    // 🎊 Confetti Animation
+    function launchConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      for (let i = 0; i < 150; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * 100,
+          color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+          tilt: Math.random() * 10 - 10,
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+        });
+        update();
+      }
+
+      function update() {
+        particles.forEach(p => {
+          p.y += 4;
+          p.x += Math.sin(p.d);
+          if (p.y > canvas.height) {
+            p.y = -10;
+            p.x = Math.random() * canvas.width;
+          }
+        });
+      }
+
+      let interval = setInterval(draw, 30);
+      setTimeout(() => clearInterval(interval), 15000);
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const closeBtn = document.getElementById('closeMenuBtn');
+    const menu = document.getElementById('navbarContent');
+
+    if (closeBtn && menu) {
+      closeBtn.addEventListener('click', function () {
+        const collapse = bootstrap.Collapse.getInstance(menu) || new bootstrap.Collapse(menu, { toggle: false });
+        collapse.hide();
+      });
+    }
+  });
+</script>
+</body>
+</html>

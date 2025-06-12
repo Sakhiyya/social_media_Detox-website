@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Chart – Swipe Less, Live More</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* General Styles */
+    body {
+      background-color: #e6f2ff;
+      font-family: 'Poppins', sans-serif;
+      color: #003366;
+    }
+
+    header, footer {
+      background-color: #3399ff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 100, 0.2);
+    }
+
+    /* Navbar Styles */
+    .navbar-custom {
+      background: linear-gradient(90deg, #cce6ff, #b3d9ff, #a6c6ff);
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: slideInDown 1s;
+    }
+
+    .navbar-custom .navbar-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px; /* Space between links */
+    }
+
+    .navbar-custom .nav-item {
+      position: relative;
+    }
+
+    .navbar-custom .nav-link {
+      font-size: 1rem;
+      color: #003366;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .navbar-custom .nav-link:hover {
+      color: #fff;
+      background: linear-gradient(45deg, #3399ff, #66ccff);
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(51, 153, 255, 0.4);
+    }
+
+    .navbar-custom .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #3399ff;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-custom .nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .navbar-custom .active {
+      background: linear-gradient(45deg, #3399ff, #66ccff);
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* Mood Section Styles */
+    h2, h3 {
+      color: #0059b3;
+      font-weight: 600;
+    }
+
+    .mood-section {
+      padding: 60px 0;
+    }
+
+    .info-box {
+      background: linear-gradient(to right, #cce6ff, #e6f2ff);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 8px 20px rgba(0, 100, 255, 0.1);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .info-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 100, 255, 0.2);
+    }
+
+    canvas {
+      max-width: 700px;
+      margin: 30px auto;
+      background-color: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(0, 100, 255, 0.15);
+    }
+
+    .glow {
+      text-shadow: 0 0 8px #3399ff, 0 0 10px #66ccff;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 20px;
+    }
+
+    .mood-card {
+      background-color: #ffffff;
+      border-left: 5px solid #3399ff;
+      padding: 20px;
+      border-radius: 15px;
+      width: 300px;
+      box-shadow: 0 6px 15px rgba(0, 100, 255, 0.1);
+    }
+
+    .mood-card h4 {
+      color: #0066cc;
+    }
+
+    .section-highlight {
+      background-color: #d9ecff;
+      border-left: 6px solid #3399ff;
+      padding: 30px;
+      border-radius: 20px;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1 class="glow">Track Your Mood</h1>
+    <p>Visualize your journey and embrace emotional balance 🌊</p>
+  </header>
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid">
+    <a class="navbar-brand d-lg-none" href="#">ReVibe</a>
+
+    <!-- Hamburger Icon -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Menu -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+      <!-- Close Button (only on mobile) -->
+      <button type="button" class="btn-close ms-auto d-lg-none mb-3" aria-label="Close" id="closeMenuBtn"></button>
+
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="challenge.html">Challenge</a></li>
+        <li class="nav-item"><a class="nav-link" href="journal.html">Journal</a></li>
+        <li class="nav-item"><a class="nav-link active" href="mood.html">Mood Chart</a></li>
+        <li class="nav-item"><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+  <div class="container mood-section text-center">
+    <h2 class="glow">Your Emotional Landscape</h2>
+
+    <div class="info-box">
+      <p>Keep track of your daily emotions and discover how your digital detox impacts your mental wellbeing. Over time, you’ll begin to see patterns and make more informed choices about your screen time.</p>
+    </div>
+
+    <canvas id="moodLineChart"></canvas>
+    <canvas id="moodPieChart"></canvas>
+
+    <h3 class="mt-5">Mood Descriptions</h3>
+    <div class="card-container mt-4">
+      <div class="mood-card">
+        <h4>😊 Happy</h4>
+        <p>Feeling joy, lightness, and gratitude. You’re aligned with yourself.</p>
+      </div>
+      <div class="mood-card">
+        <h4>😢 Sad</h4>
+        <p>A natural response to loss or overwhelm. Allow space to process.</p>
+      </div>
+      <div class="mood-card">
+        <h4>😰 Anxious</h4>
+        <p>Worrying about the future. Ground yourself with breathing techniques.</p>
+      </div>
+      <div class="mood-card">
+        <h4>😌 Relaxed</h4>
+        <p>Peaceful, safe, and in control. A sign your routine is supporting you.</p>
+      </div>
+      <div class="mood-card">
+        <h4>🤩 Excited</h4>
+        <p>High energy, anticipation. Channel it into creative or joyful actions.</p>
+      </div>
+    </div>
+
+    <div class="section-highlight mt-5">
+      <h3>🌿 Wellness Tips</h3>
+      <ul class="text-start">
+        <li>✨ Journal at the same time every day.</li>
+        <li>📵 Reduce phone use 1 hour before bedtime.</li>
+        <li>🧘 Practice deep breathing for 3 minutes daily.</li>
+        <li>☀️ Spend 10 minutes outside in sunlight.</li>
+      </ul>
+    </div>
+
+    <div class="section-highlight mt-5">
+      <h3>📝 Reflect on Your Mood</h3>
+      <p>Think about what made you feel this way today. What small change could improve tomorrow?</p>
+      <a href="journal.html" class="btn btn-primary mt-3">Go to Journal</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Swipe Less, Live More</p>
+  </footer>
+
+  <script>
+    // Line Chart - Mood over Days
+    const ctxLine = document.getElementById('moodLineChart').getContext('2d');
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        datasets: [{
+          label: 'Mood Level',
+          data: [6, 7, 5, 8, 6, 9, 7],
+          borderColor: '#3399ff',
+          backgroundColor: 'rgba(51, 153, 255, 0.2)',
+          tension: 0.4,
+          fill: true,
+          pointBackgroundColor: '#3399ff',
+          pointRadius: 6,
+        }]
+      },
+      options: {
+        animation: {
+          duration: 1500,
+          easing: 'easeOutBounce'
+        },
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Mood Progress Throughout the Week',
+            color: '#003366',
+            font: {
+              size: 18,
+              weight: 'bold'
+            }
+          }
+        }
+      }
+    });
+
+    // Pie Chart - Mood Distribution
+    const ctxPie = document.getElementById('moodPieChart').getContext('2d');
+    new Chart(ctxPie, {
+      type: 'doughnut',
+      data: {
+        labels: ['Happy', 'Sad', 'Anxious', 'Relaxed', 'Excited'],
+        datasets: [{
+          label: 'Mood Distribution',
+          data: [30, 15, 10, 25, 20],
+          backgroundColor: [
+            '#66ccff',
+            '#99ccff',
+            '#3399ff',
+            '#80d4ff',
+            '#b3e0ff'
+          ],
+          hoverOffset: 10
+        }]
+      },
+      options: {
+        animation: {
+          animateScale: true,
+          duration: 2000
+        },
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Mood Type Breakdown',
+            color: '#003366',
+            font: {
+              size: 18,
+              weight: 'bold'
+            }
+          }
+        }
+      }
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const closeBtn = document.getElementById('closeMenuBtn');
+    const menu = document.getElementById('navbarContent');
+
+    if (closeBtn && menu) {
+      closeBtn.addEventListener('click', function () {
+        const collapse = bootstrap.Collapse.getInstance(menu) || new bootstrap.Collapse(menu, { toggle: false });
+        collapse.hide();
+      });
+    }
+  });
+</script>
+</body>
+</html>

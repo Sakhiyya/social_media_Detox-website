@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Match Game</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .navbar-custom {
+      background-color: #1e1e2f;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      animation: slideInDown 1s;
+    }
+
+    .navbar-custom .nav-link {
+      color: #fff;
+      margin: 0 10px;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .navbar-custom .nav-link:hover {
+      color: #00e6e6;
+      transform: scale(1.1);
+    }
+
+    /* Game Container */
+    .game-container {
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .game-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+      animation: fadeInDown 1s ease-in-out;
+    }
+
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .card {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.5s ease;
+      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card i {
+      font-size: 40px;
+      color: #00ffff;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .card.flipped i {
+      opacity: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-5px) rotate(1deg);
+      background: #333;
+    }
+
+    .card.matched {
+      background: #00e6e6;
+      cursor: default;
+    }
+
+    .score-board {
+      margin-top: 30px;
+      font-size: 1.2rem;
+      animation: pulse 2s infinite;
+      color: #ffcc00;
+    }
+
+    /* Win Modal */
+    .win-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: #00ffff;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.5);
+      animation: fadeIn 1s;
+    }
+
+    .win-modal h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .win-modal button {
+      background: #00ffff;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .win-modal button:hover {
+      transform: scale(1.1);
+    }
+
+    /* Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid justify-content-center">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Back to Dashboard</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Memory Match Game -->
+  <div class="game-container">
+    <h1 class="animate__animated animate__fadeInUp">🎮 Memory Match Game ✨</h1>
+    <div class="score-board">Moves: 0 | Matches: 0</div>
+    <div class="game-board" id="game-board"></div>
+  </div>
+
+  <!-- Win Modal -->
+  <div class="overlay" id="overlay"></div>
+  <div class="win-modal" id="win-modal">
+    <h2>🎉 You Won! 🎉</h2>
+    <p>You matched all pairs in <span id="total-moves"></span> moves!</p>
+    <button id="restart-btn">Play Again</button>
+  </div>
+
+  <script>
+    // JavaScript for Memory Match Game
+    const icons = ['🧠', '🎮', '🎯', '💡', '🚀', '💎', '⚡', '🔥'];
+    const cardsArray = [...icons, ...icons];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moves = 0;
+
+    // Shuffle Function
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Create Game Board
+    function createBoard() {
+      const shuffledCards = shuffle(cardsArray);
+      const gameBoard = document.getElementById('game-board');
+      shuffledCards.forEach((icon, index) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.icon = icon;
+        card.dataset.index = index;
+        card.innerHTML = `<i class="fas">${icon}</i>`;
+        card.addEventListener('click', flipCard);
+        gameBoard.appendChild(card);
+      });
+    }
+
+    // Flip Card Logic
+    function flipCard() {
+      if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+        this.classList.add('flipped');
+        flippedCards.push(this);
+
+        if (flippedCards.length === 2) {
+          moves++;
+          updateScoreBoard();
+          checkForMatch();
+        }
+      }
+    }
+
+    // Check for Match
+    function checkForMatch() {
+      const [card1, card2] = flippedCards;
+      if (card1.dataset.icon === card2.dataset.icon) {
+        card1.classList.add('matched');
+        card2.classList.add('matched');
+        matchedPairs++;
+        if (matchedPairs === icons.length) {
+          setTimeout(showWinModal, 500); // Show win modal after delay
+        }
+      } else {
+        setTimeout(() => {
+          card1.classList.remove('flipped');
+          card2.classList.remove('flipped');
+        }, 1000);
+      }
+      flippedCards = [];
+    }
+
+    // Update Scoreboard
+    function updateScoreBoard() {
+      document.querySelector('.score-board').textContent = `Moves: ${moves} | Matches: ${matchedPairs}`;
+    }
+
+    // Show Win Modal
+    function showWinModal() {
+      const overlay = document.getElementById('overlay');
+      const winModal = document.getElementById('win-modal');
+      const totalMoves = document.getElementById('total-moves');
+
+      totalMoves.textContent = moves;
+      overlay.style.display = 'block';
+      winModal.style.display = 'block';
+    }
+
+    // Restart Game
+    function restartGame() {
+      const overlay = document.getElementById('overlay');
+      const winModal = document.getElementById('win-modal');
+      const gameBoard = document.getElementById('game-board');
+
+      overlay.style.display = 'none';
+      winModal.style.display = 'none';
+
+      // Reset variables
+      flippedCards = [];
+      matchedPairs = 0;
+      moves = 0;
+
+      // Clear and recreate the board
+      gameBoard.innerHTML = '';
+      createBoard();
+      updateScoreBoard();
+    }
+
+    // Event Listeners
+    document.getElementById('restart-btn').addEventListener('click', restartGame);
+
+    // Initialize Game
+    createBoard();
+  </script>
+</body>
+
+</html>

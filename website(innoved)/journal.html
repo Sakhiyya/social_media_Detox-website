@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Journal – Swipe Less, Live More</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+
+  <style>
+    body {
+      background: linear-gradient(120deg, #e0f7fa, #b2ebf2);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header,
+    footer {
+      background-color: #00bcd4;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-custom {
+      background: linear-gradient(90deg, #80deea, #64b5f6, #4fc3f7);
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-custom .nav-link {
+      font-size: 1rem;
+      color: #004d40;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .active {
+      color: white;
+      background: linear-gradient(45deg, #00bcd4, #00acc1);
+      box-shadow: 0 4px 10px rgba(0, 188, 212, 0.4);
+    }
+    .main-container {
+      margin: 40px auto;
+      max-width: 1100px;
+      background: #ffffffcc;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+    .left-panel,
+    .right-panel {
+      padding: 20px;
+    }
+    .quote-box {
+      background-color: #e1f5fe;
+      border-left: 5px solid #00acc1;
+      padding: 15px;
+      font-style: italic;
+      color: #00796b;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    textarea,
+    input[type='range'] {
+      margin-top: 10px;
+    }
+    .emoji-board span {
+      font-size: 28px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      user-select: none;
+    }
+    .emoji-board span:hover,
+    .emoji-board span.selected {
+      transform: scale(1.4);
+      filter: drop-shadow(0 0 2px #00acc1);
+    }
+    .gratitude-box,
+    .affirmation-box {
+      background-color: #f1fafe;
+      border: 2px dashed #81d4fa;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .image-panel {
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      margin-top: 15px;
+    }
+    #mood-face {
+      font-size: 40px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    #mood-label {
+      font-weight: bold;
+      text-align: center;
+      color: #0288d1;
+    }
+    .btn-custom {
+      margin: 10px 5px;
+      transition: all 0.3s ease;
+    }
+    .btn-custom:hover {
+      transform: scale(1.05);
+    }
+    .calendar {
+      margin-top: 20px;
+      border: 1px solid #00acc1;
+      border-radius: 10px;
+      padding: 10px;
+      background: #e0f7fa;
+    }
+    .calendar input[type='date'] {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #00acc1;
+      font-size: 1rem;
+    }
+    .entry-list {
+      max-height: 150px;
+      overflow-y: auto;
+      margin-top: 10px;
+      border: 1px solid #00acc1;
+      border-radius: 6px;
+      padding: 8px;
+      background: #ffffffcc;
+    }
+    .entry-list p {
+      margin: 4px 0;
+      cursor: pointer;
+      border-bottom: 1px solid #00acc1;
+      padding-bottom: 4px;
+    }
+    .entry-list p:hover {
+      background-color: #b2ebf2;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="animate__animated animate__fadeInDown">
+    <h1>Journal Your Progress</h1>
+    <p class="lead">Feel it. Write it. Grow from it 💖</p>
+  </header>
+
+  <nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid">
+    <a class="navbar-brand d-lg-none" href="#">ReVibe</a>
+
+    <!-- Hamburger Icon -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Menu -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+      <!-- Close Button (only on mobile) -->
+      <button type="button" class="btn-close ms-auto d-lg-none mb-3" aria-label="Close" id="closeMenuBtn"></button>
+
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="challenge.html">Challenge</a></li>
+        <li class="nav-item"><a class="nav-link active" href="journal.html">Journal</a></li>
+        <li class="nav-item"><a class="nav-link" href="mood.html">Mood Chart</a></li>
+        <li class="nav-item"><a class="nav-link" href="quiz.html">Quiz</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Main Content -->
+  <div class="main-container row animate__animated animate__fadeInUp">
+    <!-- Left Panel -->
+    <div class="col-md-6 left-panel">
+      <div class="quote-box text-center">
+        “Small progress is still progress. Keep writing, keep healing.” 🌸
+      </div>
+
+      <!-- Calendar to pick entry date -->
+      <div class="calendar">
+        <label for="entry-date" class="form-label">Select Date to View/Edit Entry:</label>
+        <input type="date" id="entry-date" />
+        <div class="entry-list" id="entry-list" title="Click to load an entry"></div>
+      </div>
+
+      <label for="entry" class="form-label mt-3">Write your thoughts:</label>
+      <textarea
+        class="form-control"
+        id="entry"
+        rows="6"
+        placeholder="What's on your mind today? ✨"
+      ></textarea>
+
+      <!-- Mood Selector -->
+      <label for="mood" class="form-label mt-3">How are you feeling today? (1–10)</label>
+      <input
+        type="range"
+        id="mood"
+        class="form-range"
+        min="1"
+        max="10"
+        value="5"
+        oninput="updateMoodDisplay(this.value)"
+      />
+      <div id="mood-face">😐</div>
+      <p id="mood-label">Neutral</p>
+
+      <!-- Emoji Board for quick mood -->
+      <div
+        class="emoji-board d-flex justify-content-center mt-3 gap-2"
+        id="emoji-board"
+      >
+        <span title="Joyful" onclick="selectEmoji(this)">😊</span>
+        <span title="Excited" onclick="selectEmoji(this)">🤩</span>
+        <span title="Calm" onclick="selectEmoji(this)">😌</span>
+        <span title="Tired" onclick="selectEmoji(this)">😴</span>
+        <span title="Anxious" onclick="selectEmoji(this)">😟</span>
+        <span title="Grateful" onclick="selectEmoji(this)">🙏</span>
+      </div>
+
+      <div class="gratitude-box mt-3">
+        <h5>🙏 Today I'm grateful for...</h5>
+        <textarea
+          id="gratitude"
+          class="form-control"
+          rows="2"
+          placeholder="Something positive, big or small 💙"
+        ></textarea>
+      </div>
+
+      <div class="affirmation-box mt-3">
+        <h5>✨ Your Daily Affirmation</h5>
+        <p id="affirmation-text">Click below to inspire yourself ✨</p>
+        <button class="btn btn-info mt-2" onclick="generateAffirmation()">
+          Inspire Me
+        </button>
+      </div>
+
+      <div class="text-center mt-3">
+        <button class="btn btn-primary btn-custom" onclick="saveEntry()">
+          💾 Save Entry
+        </button>
+        <button class="btn btn-outline-secondary btn-custom" onclick="downloadEntry()">
+          ⬇️ Download Entry
+        </button>
+      </div>
+
+      <p id="msg" class="text-success text-center mt-2" style="display: none;">
+        Entry saved! ✅
+      </p>
+    </div>
+
+   <!-- Right Panel -->
+<div class="col-md-6 right-panel d-flex justify-content-center align-items-center">
+    <img src="images/Book ☀️📚.png" alt="Cute Journal" class="img-fluid image-panel">
+</div>
+
+
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Swipe Less, Live More</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Affirmations array
+    const affirmations = [
+      "I am enough just as I am.",
+      "Each day is a new opportunity for growth.",
+      "I choose to focus on the positive.",
+      "I am worthy of happiness and love.",
+      "Challenges help me grow stronger.",
+      "I am proud of how far I've come.",
+      "Peace begins with me.",
+      "I attract positive energy.",
+      "My progress is progress, no matter how small.",
+      "I am in control of my happiness."
+    ];
+
+    // Map mood value to face and label
+    function updateMoodDisplay(value) {
+      const moodFace = document.getElementById("mood-face");
+      const moodLabel = document.getElementById("mood-label");
+      let face = "😐";
+      let label = "Neutral";
+
+      if (value <= 2) {
+        face = "😞";
+        label = "Very Low";
+      } else if (value <= 4) {
+        face = "😕";
+        label = "Low";
+      } else if (value <= 6) {
+        face = "😐";
+        label = "Neutral";
+      } else if (value <= 8) {
+        face = "🙂";
+        label = "Good";
+      } else {
+        face = "😄";
+        label = "Great";
+      }
+
+      moodFace.textContent = face;
+      moodLabel.textContent = label;
+
+      // Also clear emoji selection when slider changes
+      clearEmojiSelection();
+    }
+
+    // Emoji board logic
+    function selectEmoji(span) {
+      clearEmojiSelection();
+      span.classList.add("selected");
+      // Map emojis to mood slider values
+      const emojiToMood = {
+        "😊": 8,
+        "🤩": 10,
+        "😌": 7,
+        "😴": 3,
+        "😟": 2,
+        "🙏": 9
+      };
+      const moodValue = emojiToMood[span.textContent] || 5;
+      document.getElementById("mood").value = moodValue;
+      updateMoodDisplay(moodValue);
+    }
+    function clearEmojiSelection() {
+      document.querySelectorAll("#emoji-board span").forEach((el) => {
+        el.classList.remove("selected");
+      });
+    }
+
+    // Generate random affirmation
+    function generateAffirmation() {
+      const randomIndex = Math.floor(Math.random() * affirmations.length);
+      document.getElementById("affirmation-text").textContent =
+        affirmations[randomIndex];
+    }
+
+    // Save journal entry to localStorage
+    function saveEntry() {
+      const date = document.getElementById("entry-date").value;
+      if (!date) {
+        alert("Please select a date to save your entry.");
+        return;
+      }
+      const entry = {
+        thoughts: document.getElementById("entry").value.trim(),
+        mood: document.getElementById("mood").value,
+        gratitude: document.getElementById("gratitude").value.trim(),
+        affirmation: document.getElementById("affirmation-text").textContent,
+        timestamp: new Date().toISOString()
+      };
+      if (!entry.thoughts && !entry.gratitude) {
+        if (
+          !confirm(
+            "Your entry and gratitude are empty. Do you want to save an empty entry?"
+          )
+        )
+          return;
+      }
+
+      localStorage.setItem("journalEntry_" + date, JSON.stringify(entry));
+      showMessage("Entry saved! ✅");
+      loadEntryList();
+    }
+
+    // Load entry for selected date
+    function loadEntry(date) {
+      if (!date) return;
+      const data = localStorage.getItem("journalEntry_" + date);
+      if (!data) {
+        // Clear form
+        document.getElementById("entry").value = "";
+        document.getElementById("gratitude").value = "";
+        document.getElementById("mood").value = 5;
+        updateMoodDisplay(5);
+        document.getElementById("affirmation-text").textContent =
+          "Click below to inspire yourself ✨";
+        clearEmojiSelection();
+        return;
+      }
+      const entry = JSON.parse(data);
+      document.getElementById("entry").value = entry.thoughts || "";
+      document.getElementById("gratitude").value = entry.gratitude || "";
+      document.getElementById("mood").value = entry.mood || 5;
+      updateMoodDisplay(entry.mood || 5);
+      document.getElementById("affirmation-text").textContent =
+        entry.affirmation || "Click below to inspire yourself ✨";
+
+      // Select emoji if mood matches
+      clearEmojiSelection();
+      // Find emoji for mood
+      const moodToEmoji = {
+        8: "😊",
+        10: "🤩",
+        7: "😌",
+        3: "😴",
+        2: "😟",
+        9: "🙏"
+      };
+      const emojiBoardSpans = document.querySelectorAll("#emoji-board span");
+      emojiBoardSpans.forEach((span) => {
+        if (moodToEmoji[entry.mood] === span.textContent) {
+          span.classList.add("selected");
+        }
+      });
+    }
+
+    // Load list of saved entries
+    function loadEntryList() {
+      const listDiv = document.getElementById("entry-list");
+      listDiv.innerHTML = "";
+      // Show all saved entries keys
+      const keys = Object.keys(localStorage)
+        .filter((key) => key.startsWith("journalEntry_"))
+        .sort()
+        .reverse();
+
+      if (keys.length === 0) {
+        listDiv.innerHTML = "<em>No saved entries yet.</em>";
+        return;
+      }
+
+      keys.forEach((key) => {
+        const date = key.replace("journalEntry_", "");
+        const entry = JSON.parse(localStorage.getItem(key));
+        const preview = entry.thoughts
+          ? entry.thoughts.substring(0, 30) + (entry.thoughts.length > 30 ? "…" : "")
+          : "(No thoughts)";
+        const p = document.createElement("p");
+        p.textContent = `${date}: ${preview}`;
+        p.title = "Click to load entry for " + date;
+        p.onclick = () => {
+          document.getElementById("entry-date").value = date;
+          loadEntry(date);
+        };
+        listDiv.appendChild(p);
+      });
+    }
+
+    // Show a message temporarily
+    function showMessage(msg) {
+      const msgEl = document.getElementById("msg");
+      msgEl.textContent = msg;
+      msgEl.style.display = "block";
+      setTimeout(() => {
+        msgEl.style.display = "none";
+      }, 2500);
+    }
+
+    // Download entry as a text file
+    function downloadEntry() {
+      const date = document.getElementById("entry-date").value;
+      if (!date) {
+        alert("Please select a date to download your entry.");
+        return;
+      }
+      const entryData = localStorage.getItem("journalEntry_" + date);
+      if (!entryData) {
+        alert("No entry found for this date.");
+        return;
+      }
+      const entry = JSON.parse(entryData);
+      let content = `Journal Entry for ${date}\n\n`;
+      content += `Thoughts:\n${entry.thoughts || "(No thoughts)"}\n\n`;
+      content += `Mood (1-10): ${entry.mood || "N/A"}\n\n`;
+      content += `Gratitude:\n${entry.gratitude || "(No gratitude)"}\n\n`;
+      content += `Affirmation:\n${entry.affirmation || "(No affirmation)"}\n\n`;
+      content += `Saved on: ${new Date(entry.timestamp).toLocaleString()}`;
+
+      const blob = new Blob([content], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `Journal_${date}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Initialize default date to today
+    function initDate() {
+      const today = new Date().toISOString().slice(0, 10);
+      document.getElementById("entry-date").value = today;
+      loadEntry(today);
+      loadEntryList();
+    }
+
+    // Event listener for date change
+    document.getElementById("entry-date").addEventListener("change", (e) => {
+      loadEntry(e.target.value);
+    });
+
+    // On page load
+    window.onload = () => {
+      initDate();
+      updateMoodDisplay(document.getElementById("mood").value);
+    };
+  </script>
+  <!-- Bootstrap Bundle JS (if not already included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const closeBtn = document.getElementById('closeMenuBtn');
+    const menu = document.getElementById('navbarContent');
+
+    if (closeBtn && menu) {
+      closeBtn.addEventListener('click', function () {
+        const collapse = bootstrap.Collapse.getInstance(menu) || new bootstrap.Collapse(menu, { toggle: false });
+        collapse.hide();
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
